@@ -60,7 +60,7 @@ while 1:
 			continue
 			
 		# is it a RT?
-		if status.text.lower().startswith("RT"):
+		if status.text.lower().startswith("rt"):
 			continue
 
 		# does not contain "nsfw"
