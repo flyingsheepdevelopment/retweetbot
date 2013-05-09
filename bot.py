@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # 
 # Copyright (c) 2013 Malte Bublitz, https://malte-bublitz.de
+# Copyright (c) 2013 Benjamin Leuckefeld, http://atroxlp.de
 # Copyright (c) 2012 Juan C. Olivares <juancri@juancri.com>
 # based on original code by Christian Palomares <palomares.c@gmail.com>
 # 
@@ -62,8 +63,8 @@ while 1:
 				if status.text.lower().find(ht) >= 0:
 					send = true
 
-				if not send:
-					continue
+			if not send:
+				continue
 		
 		# is it a mention?
 		if status.text.lower().startswith("@"):
