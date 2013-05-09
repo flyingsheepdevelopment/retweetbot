@@ -1,4 +1,7 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 # 
+# Copyright (c) 2013 Malte Bublitz, https://malte-bublitz.de
 # Copyright (c) 2012 Juan C. Olivares <juancri@juancri.com>
 # based on original code by Christian Palomares <palomares.c@gmail.com>
 # 
@@ -9,9 +12,9 @@ import time
 import twitter
 
 # config
-friends = [ 1, 2, 3 ] # Add here the IDs of the users who will be retweeted
-hashtag = '#myhashtag' # Any hashtag or magic word that triggers the retweet
-sleep = 60 # Time betweet queries to Twitter
+me = "myownscreenname" # Your own screen name
+hashtags = ['#myhashtag1', '#myhashtag2'] # Any hashtag or magic word that triggers the retweet
+sleep = 5 # Time betweet queries to Twitter
 count = 100 # Amount of tweets per request (max 100)
 nativeRetweet = True # If true, retweets natively. If false, retweets using "RT @user:" 
 
@@ -29,7 +32,7 @@ first = 1
 while 1:
 	# get last tweets
 	print "Getting tweets..."
-	timeline = api.GetFriendsTimeline (since_id = lastid, count = count)
+	timeline = api.GetSearch(hashtags[0], since_id = lastid, per_page = count)
 	
 	# update last ID
 	if len (timeline) > 0:
@@ -43,12 +46,16 @@ while 1:
 	
 	# check tweets
 	for status in timeline:
-		# is the user allowed?
-		if not status.user.id in friends:
+		# do not rt own tweets
+		if status.user.screen_name.lower() == me:
 			continue
 		
 		# has the hashtag?
-		if status.text.lower ().find (hashtag) < 0:
+		tweet_is_ok = False
+		for hashtag in hashtags:
+			if status.text.lower ().find (hashtag) < 0:
+				tweet_is_ok = True
+		if not tweet_is_ok:
 			continue
 		
 		# let's retweet
@@ -62,5 +69,5 @@ while 1:
 			print "Tweeting:", retweet
 			api.PostUpdate (retweet)
 
-        # zZzZzZ
-        time.sleep (sleep)
+	# zZzZzZ
+	time.sleep(sleep)
