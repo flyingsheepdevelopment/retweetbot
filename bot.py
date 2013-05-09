@@ -46,12 +46,21 @@ while 1:
 	
 	# check tweets
 	for status in timeline:
+
 		# do not rt own tweets
 		if status.user.screen_name.lower() == me:
 			continue
 		
 		# has the hashtag?
 		if status.text.lower ().find (hashtag) < 0:
+			continue
+		
+		# is it a mention?
+		if status.text.lower().startswith("@"):
+			continue
+			
+		# is it a RT?
+		if status.text.lower().startswith("RT"):
 			continue
 
 		# does not contain "nsfw"
