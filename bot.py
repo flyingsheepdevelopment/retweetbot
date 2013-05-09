@@ -9,7 +9,7 @@
 # 
 
 import time
-import twitter
+import _twitter
 
 # config
 me = "myownscreenname" # Your own screen name
@@ -20,7 +20,7 @@ nativeRetweet = True # If true, retweets natively. If false, retweets using "RT 
 
 # API initialization
 # WARNING: Don't share these keys
-api = twitter.Api (
+api = _twitter.Api (
 	consumer_key = '',
 	consumer_secret = '',
 	access_token_key = '',
