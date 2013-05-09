@@ -13,7 +13,7 @@ import twitter
 
 # config
 me = "myownscreenname" # Your own screen name
-hashtags = ['#myhashtag1', '#myhashtag2'] # Any hashtag or magic word that triggers the retweet
+hashtag = '#myhashtag1' # Any hashtag or magic word that triggers the retweet
 sleep = 5 # Time betweet queries to Twitter
 count = 100 # Amount of tweets per request (max 100)
 nativeRetweet = True # If true, retweets natively. If false, retweets using "RT @user:" 
@@ -32,7 +32,7 @@ first = 1
 while 1:
 	# get last tweets
 	print "Getting tweets..."
-	timeline = api.GetSearch(hashtags[0], since_id = lastid, per_page = count)
+	timeline = api.GetSearch(hashtag, since_id = lastid, per_page = count)
 	
 	# update last ID
 	if len (timeline) > 0:
@@ -51,11 +51,15 @@ while 1:
 			continue
 		
 		# has the hashtag?
-		tweet_is_ok = False
-		for hashtag in hashtags:
-			if status.text.lower ().find (hashtag) < 0:
-				tweet_is_ok = True
-		if not tweet_is_ok:
+		if status.text.lower ().find (hashtag) < 0:
+			continue
+
+		# does not contain "nsfw"
+		if status.text.lower().find("nsfw") > 0:
+			continue
+
+		# at least 3 words
+		if len(status.text.split(" ")) < 3:
 			continue
 		
 		# let's retweet
