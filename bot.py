@@ -14,6 +14,7 @@ import _twitter
 # config
 me = "myownscreenname" # Your own screen name
 hashtag = '#myhashtag1' # Any hashtag or magic word that triggers the retweet
+additionalHashtags = ["tag1", "#tag2"] # At least one of the most be contained in the tweet. write "[]" for no additionalHashtags
 sleep = 5 # Time betweet queries to Twitter
 count = 100 # Amount of tweets per request (max 100)
 nativeRetweet = True # If true, retweets natively. If false, retweets using "RT @user:" 
@@ -54,6 +55,15 @@ while 1:
 		# has the hashtag?
 		if status.text.lower ().find (hashtag) < 0:
 			continue
+		# has additional hashtag
+		if len(additional_hashtags) > 0:
+			send = false
+			for ht in additionalHashtags:
+				if status.text.lower().find(ht) >= 0:
+					send = true
+
+				if not send:
+					continue
 		
 		# is it a mention?
 		if status.text.lower().startswith("@"):
