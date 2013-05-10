@@ -88,7 +88,7 @@ class RetweetBot(object):
 				if status.text.lower ().find (self.config["hashtag"]) < 0:
 					continue
 				# has additional hashtag
-				if len(self.confgi["additionalHashtags"]) > 0:
+				if len(self.config["additionalHashtags"]) > 0:
 					send = False
 					for ht in self.config["additionalHashtags"]:
 						if status.text.lower().find(ht) >= 0:
