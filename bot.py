@@ -97,16 +97,19 @@ class RetweetBot(object):
 				if not self.additional_conditions(status):
 					continue
 				
-				# let's retweet
-				if self.config["nativeRetweet"]:
-					print "Retweeting:", status.user.screen_name, status.text
-					self.api.PostRetweet (status.id)
-				else:
-					retweet = 'RT @' + status.user.screen_name + ": " + status.text
-					if len (retweet) > 140:
-						retweet = retweet [:137] + "..."
-					print "Tweeting:", retweet
-					self.api.PostUpdate (retweet)
+				try:
+					# let's retweet
+					if self.config["nativeRetweet"]:
+						print "Retweeting:", status.user.screen_name, status.text
+						self.api.PostRetweet (status.id)
+					else:
+						retweet = 'RT @' + status.user.screen_name + ": " + status.text
+						if len (retweet) > 140:
+							retweet = retweet [:137] + "..."
+						print "Tweeting:", retweet
+						self.api.PostUpdate (retweet)
+				except _twitter.TwitterRrror:
+					pass
 
 			# zZzZzZ
 			time.sleep(self.config["sleep"])
