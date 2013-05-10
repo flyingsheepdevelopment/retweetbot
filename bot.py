@@ -32,7 +32,7 @@ class RetweetBot(object):
 			access_token_secret = asec
 		)
 		
-	def additional_conditions(self):
+	def additional_conditions(self, status):
 		# is it a mention?
 		if status.text.lower().startswith("@"):
 			return False
@@ -80,15 +80,15 @@ class RetweetBot(object):
 				if status.text.lower ().find (self.config["hashtag"]) < 0:
 					continue
 				# has additional hashtag
-				if len(self.confgi["additional_hashtags"]) > 0:
-					send = false
+				if len(self.confgi["additionalHashtags"]) > 0:
+					send = False
 					for ht in self.config["additionalHashtags"]:
 						if status.text.lower().find(ht) >= 0:
-							send = true
+							send = True
 
 					if not send:
 						continue
-				if not self.additional_conditions():
+				if not self.additional_conditions(status):
 					continue
 				
 				# let's retweet
@@ -103,7 +103,7 @@ class RetweetBot(object):
 					self.api.PostUpdate (retweet)
 
 			# zZzZzZ
-			time.sleep(sleep)
+			time.sleep(self.config["sleep"])
 
 def main():
 	bot = RetweetBot("Consumer Key", "Consumer Secret", "Acces Token Key", "Access Token Secret")
