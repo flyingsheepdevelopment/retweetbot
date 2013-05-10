@@ -110,7 +110,7 @@ class RetweetBot(object):
 							retweet = retweet [:137] + "..."
 						print "Tweeting:", retweet
 						self.api.PostUpdate (retweet)
-				except _twitter.TwitterRrror:
+				except _twitter.TwitterError:
 					print "Could not retweet!"
 					pass
 
