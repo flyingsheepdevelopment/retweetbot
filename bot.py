@@ -57,12 +57,14 @@ class RetweetBot(object):
 		return True
 
 	def run(self):
+		print "Bot started! Getting tweets..."
+		print "Searching tweets containing '" + self.config["hashtag"] + "'."
 		# loop
 		lastid = None
 		first = 1
 		while 1:
 			# get last tweets
-			print "Getting tweets..."
+			# print "Getting tweets..."
 			timeline = self.api.GetSearch(self.config["hashtag"], since_id = lastid, per_page = self.config["count"])
 			
 			# update last ID
