@@ -20,16 +20,22 @@ class RetweetBot(object):
 			"additionalHashtags": ["tag1", "#tag2"], # At least one of the most be contained in the tweet. write "[]" for no additionalHashtags
 			"sleep": 5, # Time betweet queries to Twitter
 			"count": 100, # Amount of tweets per request (max 100)
-			"nativeRetweet": True # If true, retweets natively. If false, retweets using "RT @user:" 
+			"nativeRetweet": True, # If true, retweets natively. If false, retweets using "RT @user:" 
+			
+			# Twitter API Config
+			"Consumer_Key": "",
+			"Consumer_Secret": "",
+			"Acces_Token_Key": "",
+			"Acces_Token_Secret": ""
 		}
-	def __init__(self, ckey, csec, akey, asec):
+	def __init__(self):
 		# API initialization
 		# WARNING: Don't share these keys
 		self.api = _twitter.Api (
-			consumer_key = ckey,
-			consumer_secret = csec,
-			access_token_key = akey,
-			access_token_secret = asec
+			consumer_key = self.config["Consumer_Key"],
+			consumer_secret = self.config["Consumer_Secret"],
+			access_token_key = self.config["Acces_Token_Key"],
+			access_token_secret = self.config["Acces_Token_Secret"]
 		)
 		
 	def additional_conditions(self, status):
@@ -106,8 +112,11 @@ class RetweetBot(object):
 			time.sleep(self.config["sleep"])
 
 def main():
-	bot = RetweetBot("Consumer Key", "Consumer Secret", "Acces Token Key", "Access Token Secret")
+	bot = RetweetBot()
 	bot.run()
 
 if __name__=="__main__":
-	main()
+	try:
+		main()
+	except KeyboardInterrupt:
+		pass
