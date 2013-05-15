@@ -38,9 +38,6 @@ class RetweetBot(object):
 		logger.important("Bot started!")
 		logger.info("Searching tweets containing '" + hashtag + "'.")
 		
-		print "Bot started!"
-		print "Searching tweets containing '" + hashtag + "'."
-		
 		# loop
 		lastid = None
 		first = 1

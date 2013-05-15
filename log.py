@@ -40,7 +40,7 @@ class Log(object):
 		
 	def important(self, text):
 		now = datetime.now()
-		msg = "[" + str(now.month) + "/" + str(now.day) + "/" + str(now.year) + " " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second) + "] [ERROR] " + text
+		msg = "[" + str(now.month) + "/" + str(now.day) + "/" + str(now.year) + " " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second) + "] [IMPORTANT] " + text
 		if self.loglevel_file <= IMPORTANT:
 			self.logfile.write(msg +"\n")
 		if self.loglevel_console <= IMPORTANT:
