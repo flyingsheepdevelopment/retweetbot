@@ -32,25 +32,25 @@ class Log(object):
 		self.loglevel_console = level
 		
 	def info(self, text):
-		now = datetime.now()
-		msg = "[" + str(now.month) + "/" + str(now.day) + "/" + str(now.year) + " " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second) + "] [INFO] " + text
+		msg = "[" + self.gettimestamp() + "] [INFO] " + text
 		if self.loglevel_file <= INFO:
 			self.logfile.write(msg+"\n")
 		if self.loglevel_console <= INFO:
 			print msg
 		
 	def important(self, text):
-		now = datetime.now()
-		msg = "[" + str(now.month) + "/" + str(now.day) + "/" + str(now.year) + " " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second) + "] [IMPORTANT] " + text
+		msg = "[" + self.gettimestamp() + "] [IMPORTANT] " + text
 		if self.loglevel_file <= IMPORTANT:
 			self.logfile.write(msg +"\n")
 		if self.loglevel_console <= IMPORTANT:
 			print msg
 		
 	def error(self, text):
-		now = datetime.now()
-		msg = "[" + str(now.month) + "/" + str(now.day) + "/" + str(now.year) + " " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second) + "] [ERROR] " + text
+		msg = "[" + self.gettimestamp() + "] [ERROR] " + text
 		if self.loglevel_file <= ERROR:
 			self.logfile.write(msg +"\n")
 		if self.loglevel_console <= ERROR:
 			print msg
+	
+	def gettimestamp(self):
+		return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
