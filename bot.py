@@ -69,7 +69,7 @@ class RetweetBot(object):
 				# does not contain word from blacklist
 				if len(blacklist) > 0:
 					for bl in blacklist:
-						if status.text.lower().find(bl) >= 0
+						if status.text.lower().find(bl) >= 0:
 							continue
 				
 				# has additional hashtag
