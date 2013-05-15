@@ -52,7 +52,7 @@ class RetweetBot(object):
 			# update last ID
 			if len (timeline) > 0:
 				lastid = timeline [0].id
-				logger.info("Last ID updated:" + lastid)
+				logger.info("Last ID updated:" + str(lastid))
 			
 			# skip the first time
 			if first > 0:
