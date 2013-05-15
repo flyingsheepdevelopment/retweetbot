@@ -80,13 +80,13 @@ class RetweetBot(object):
 				try:
 					# let's retweet
 					if native_retweet:
-						logger.info("Retweeting: " status.user.screen_name + " " status.text, True)
+						logger.info("Retweeting: " + status.user.screen_name + " " + status.text, True)
 						api.PostRetweet (status.id)
 					else:
 						retweet = 'RT @' + status.user.screen_name + ": " + status.text
 						if len (retweet) > 140:
 							retweet = retweet [:137] + "..."
-						logger.info("Tweeting: " retweet, True)
+						logger.info("Tweeting: " + retweet, True)
 						api.PostUpdate (retweet)
 				except _twitter.TwitterError:
 					logger.error("Could not retweet!", True)
