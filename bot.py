@@ -15,7 +15,7 @@ import _twitter
 import sys
 
 class RetweetBot(object):
-	def run(self, me, hashtag, add_hashtags, sleep, count, native_retweet, con_key, con_sec, tok_key, tok_sec, check_conds):
+	def run(self, me, hashtag, add_hashtags, blacklist, sleep, count, native_retweet, con_key, con_sec, tok_key, tok_sec, check_conds):
 		import log
 		logger = log.Log(os.path.join(os.path.dirname(__file__), ".".join(os.path.basename(__file__).split(".")[:-1])+".log"))
 		if len(sys.argv)>1:
@@ -66,6 +66,12 @@ class RetweetBot(object):
 				if status.user.screen_name.lower() == me:
 					continue
 				
+				# does not contain word from blacklist
+				if len(blacklist) > 0:
+					for bl in blacklist:
+						if status.text.lower().find(bl) >= 0
+							continue
+				
 				# has additional hashtag
 				if len(add_hashtags) > 0:
 					send = False
@@ -75,6 +81,8 @@ class RetweetBot(object):
 
 					if not send:
 						continue
+				
+				# checks additional conditions
 				if not check_conds(status):
 					continue
 				

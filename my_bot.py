@@ -11,6 +11,7 @@ config = {
 		"me": "myownscreenname", # Your own screen name
 		"hashtag": '#myhashtag1', # Any hashtag or magic word that triggers the retweet
 		"additionalHashtags": ["tag1", "#tag2"], # At least one of the most be contained in the tweet. write "[]" for no additionalHashtags
+		"backlist": ["nsfw", "#porn"]
 		"sleep": 5, # Time betweet queries to Twitter
 		"count": 100, # Amount of tweets per request (max 100)
 		"nativeRetweet": True, # If true, retweets natively. If false, retweets using "RT @user:" 
@@ -32,10 +33,6 @@ def get_conditions():
 		if tweet.text.lower().startswith("rt"):
 			return False
 
-		# does not contain "nsfw"
-		if tweet.text.lower().find("nsfw") > 0:
-			return False
-
 		# at least 3 words
 		if len(tweet.text.split(" ")) < 3:
 			return False			
@@ -44,7 +41,7 @@ def get_conditions():
 
 def main():
 	rtbot = bot.RetweetBot()
-	rtbot.run(config["me"], config["hashtag"], config["additionalHashtags"], config["sleep"], config["count"], config["nativeRetweet"], config["Consumer_Key"], config["Consumer_Secret"], config["Acces_Token_Key"], config["Acces_Token_Secret"], get_conditions())
+	rtbot.run(config["me"], config["hashtag"], config["additionalHashtags"], config["blacklist"], config["sleep"], config["count"], config["nativeRetweet"], config["Consumer_Key"], config["Consumer_Secret"], config["Acces_Token_Key"], config["Acces_Token_Secret"], get_conditions())
 
 if __name__=="__main__":
 	try:
