@@ -54,7 +54,7 @@ def main():
 			config["Consumer_Secret"],
 			config["Acces_Token_Key"],
 			config["Acces_Token_Secret"],
-			get_conditions()
+			get_conditions(),
 			os.path.join(os.path.dirname(__file__), ".".join(os.path.basename(__file__).split(".")[:-1])+".log")
 			)
 
