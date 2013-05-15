@@ -10,87 +10,48 @@
 # 
 
 import time
+import os
 import _twitter
+import log
 
 class RetweetBot(object):
-	# config
-	config = {
-			"me": "myownscreenname", # Your own screen name
-			"hashtag": '#myhashtag1', # Any hashtag or magic word that triggers the retweet
-			"additionalHashtags": ["tag1", "#tag2"], # At least one of the most be contained in the tweet. write "[]" for no additionalHashtags
-			"sleep": 5, # Time betweet queries to Twitter
-			"count": 100, # Amount of tweets per request (max 100)
-			"nativeRetweet": True, # If true, retweets natively. If false, retweets using "RT @user:" 
-			
-			# Twitter API Config
-			"Consumer_Key": "",
-			"Consumer_Secret": "",
-			"Acces_Token_Key": "",
-			"Acces_Token_Secret": ""
-		}
-	def __init__(self):
-		# API initialization
-		# WARNING: Don't share these keys
-		self.api = _twitter.Api (
-			consumer_key = self.config["Consumer_Key"],
-			consumer_secret = self.config["Consumer_Secret"],
-			access_token_key = self.config["Acces_Token_Key"],
-			access_token_secret = self.config["Acces_Token_Secret"]
-		)
-		
-	def additional_conditions(self, status):
-		# is it a mention?
-		if status.text.lower().startswith("@"):
-			return False
-			
-		# is it a RT?
-		if status.text.lower().startswith("rt"):
-			return False
-
-		# does not contain "nsfw"
-		if status.text.lower().find("nsfw") > 0:
-			return False
-
-		# at least 3 words
-		if len(status.text.split(" ")) < 3:
-			return False
-			
-		return True
-
-	def run(self):
+	def run(self, me, hashtag, add_hashtags, sleep, count, native_retweet, con_key, con_sec, tok_key, tok_sec, check_conds):
+		logger = log.Log()
+	
 		print "----------------------------------"
 		print "     Flying Sheep Retweet Bot"
 		print "         Bot is starting!"
 		print "----------------------------------"
-		
-		import os
-		log = os.path.join(os.path.dirname(__file__), ".".join(os.path.basename(__file__).split(".")[:-1])+".log")
-		
-		if not os.access(os.path.join(os.path.dirname(__self__), log), W_OK):
-			print "Log file does not exists. Creating one for you."
-			f = file(log, 'w')
-			f.close()
-			print "Logfile saved!"
+		print ""	
+		logger.info("Flying Sheep Retweet Bot - Bot is starting!", False)
 			
-		print "Bot started!"
-		print "Searching tweets containing '" + self.config["hashtag"] + "'."
+		api = _twitter.Api (
+			consumer_key = con_key,
+			consumer_secret = con_sec,
+			access_token_key = tok_key,
+			access_token_secret = tok_sec
+		)
+		
+		log = os.path.join(os.path.dirname(__file__), ".".join(os.path.basename(__file__).split(".")[:-1])+".log")
+					
+		logger.info("Bot started!", True)
+		logger.info("Searching tweets containing '" + hashtag + "'.", True)
 		
 		# loop
 		lastid = None
 		first = 1
 		while 1:
 			# get last tweets
-			# print "Getting tweets..."
 			try:
-				timeline = self.api.GetSearch(self.config["hashtag"], since_id = lastid, per_page = self.config["count"])
+				timeline = api.GetSearch(hashtag, since_id = lastid, per_page = count)
 			except _twitter.TwitterError:
-				print "Could not get tweets!"
+				logger.error("Could not get tweets!", True)
 				continue
 			
 			# update last ID
 			if len (timeline) > 0:
 				lastid = timeline [0].id
-				print "Last ID updated:", lastid
+				logger.info("Last ID updated:" + lastid, False)
 			
 			# skip the first time
 			if first > 0:
@@ -101,40 +62,37 @@ class RetweetBot(object):
 			for status in timeline:
 
 				# do not rt own tweets
-				if status.user.screen_name.lower() == self.config["me"]:
+				if status.user.screen_name.lower() == me:
 					continue
 				
-				# has the hashtag?
-				if status.text.lower ().find (self.config["hashtag"]) < 0:
-					continue
 				# has additional hashtag
-				if len(self.config["additionalHashtags"]) > 0:
+				if len(add_hashtags) > 0:
 					send = False
-					for ht in self.config["additionalHashtags"]:
+					for ht in add_hashtags:
 						if status.text.lower().find(ht) >= 0:
 							send = True
 
 					if not send:
 						continue
-				if not self.additional_conditions(status):
+				if not check_conds(status):
 					continue
 				
 				try:
 					# let's retweet
-					if self.config["nativeRetweet"]:
-						print "Retweeting:", status.user.screen_name, status.text
-						self.api.PostRetweet (status.id)
+					if native_retweet:
+						logger.info("Retweeting: " status.user.screen_name + " " status.text, True)
+						api.PostRetweet (status.id)
 					else:
 						retweet = 'RT @' + status.user.screen_name + ": " + status.text
 						if len (retweet) > 140:
 							retweet = retweet [:137] + "..."
-						print "Tweeting:", retweet
-						self.api.PostUpdate (retweet)
+						logger.info("Tweeting: " retweet, True)
+						api.PostUpdate (retweet)
 				except _twitter.TwitterError:
-					print "Could not retweet!"
+					logger.error("Could not retweet!", True)
 
 			# zZzZzZ
-			time.sleep(self.config["sleep"])
+			time.sleep(sleep)
 			
 def main():
 	bot = RetweetBot()
