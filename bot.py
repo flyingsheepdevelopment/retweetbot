@@ -15,9 +15,9 @@ import _twitter
 import sys
 
 class RetweetBot(object):
-	def run(self, me, hashtag, add_hashtags, blacklist, sleep, count, native_retweet, con_key, con_sec, tok_key, tok_sec, check_conds):
+	def run(self, me, hashtag, add_hashtags, blacklist, sleep, count, native_retweet, con_key, con_sec, tok_key, tok_sec, check_conds, logfilename):
 		import log
-		logger = log.Log(os.path.join(os.path.dirname(__file__), ".".join(os.path.basename(__file__).split(".")[:-1])+".log"))
+		logger = log.Log(logfilename)
 		if len(sys.argv)>1:
 			if sys.argv[1] == "-v":
 				logger.setConsoleLogLevel(log.INFO)

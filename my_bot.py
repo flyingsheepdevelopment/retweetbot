@@ -6,6 +6,7 @@
 #
 
 import bot
+import os
 
 config = {
 		"me": "myownscreenname", # Your own screen name
@@ -41,7 +42,21 @@ def get_conditions():
 
 def main():
 	rtbot = bot.RetweetBot()
-	rtbot.run(config["me"], config["hashtag"], config["additionalHashtags"], config["blacklist"], config["sleep"], config["count"], config["nativeRetweet"], config["Consumer_Key"], config["Consumer_Secret"], config["Acces_Token_Key"], config["Acces_Token_Secret"], get_conditions())
+	rtbot.run(
+			config["me"],
+			config["hashtag"],
+			config["additionalHashtags"],
+			config["blacklist"],
+			config["sleep"],
+			config["count"],
+			config["nativeRetweet"],
+			config["Consumer_Key"],
+			config["Consumer_Secret"],
+			config["Acces_Token_Key"],
+			config["Acces_Token_Secret"],
+			get_conditions()
+			os.path.join(os.path.dirname(__file__), ".".join(os.path.basename(__file__).split(".")[:-1])+".log")
+			)
 
 if __name__=="__main__":
 	try:
