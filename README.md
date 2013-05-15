@@ -15,11 +15,12 @@ Requirements
 Setup
 -----
 
- * Put the bot.py and the \_twitter.py in the same directory
- * Edit the config and API sections in bot.py
+ * Put bot.py, log.py, my_bot.py and _twitter.py in the same directory
+ * Edit the config and API sections in my_bot.py
+ * You can rename my_bot.py
 
 Run
 ---
 
- * Execute: python bot.py
+ * Execute: python my_bot.py
 
