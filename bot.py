@@ -12,18 +12,21 @@
 import time
 import os
 import _twitter
-import log
+import sys
 
 class RetweetBot(object):
 	def run(self, me, hashtag, add_hashtags, sleep, count, native_retweet, con_key, con_sec, tok_key, tok_sec, check_conds):
-		logger = log.Log()
+		import log
+		logger = log.Log(os.path.join(os.path.dirname(__file__), ".".join(os.path.basename(__file__).split(".")[:-1])+".log"))
+		if len(sys.argv)>1:
+			if sys.argv[1] == "-v":
+				logger.setConsoleLogLevel(log.INFO)
 	
-		print "----------------------------------"
-		print "     Flying Sheep Retweet Bot"
-		print "         Bot is starting!"
-		print "----------------------------------"
-		print ""	
-		logger.info("Flying Sheep Retweet Bot - Bot is starting!", False)
+		logger.info("----------------------------------")
+		logger.info("     Flying Sheep Retweet Bot")
+		logger.info("         Bot is starting!")
+		logger.info("----------------------------------")
+		logger.info("")
 			
 		api = _twitter.Api (
 			consumer_key = con_key,
@@ -32,10 +35,8 @@ class RetweetBot(object):
 			access_token_secret = tok_sec
 		)
 		
-		log = os.path.join(os.path.dirname(__file__), ".".join(os.path.basename(__file__).split(".")[:-1])+".log")
-					
-		logger.info("Bot started!", True)
-		logger.info("Searching tweets containing '" + hashtag + "'.", True)
+		logger.info("Bot started!")
+		logger.info("Searching tweets containing '" + hashtag + "'.")
 		
 		# loop
 		lastid = None
@@ -45,13 +46,13 @@ class RetweetBot(object):
 			try:
 				timeline = api.GetSearch(hashtag, since_id = lastid, per_page = count)
 			except _twitter.TwitterError:
-				logger.error("Could not get tweets!", True)
+				logger.error("Could not get tweets!")
 				continue
 			
 			# update last ID
 			if len (timeline) > 0:
 				lastid = timeline [0].id
-				logger.info("Last ID updated:" + lastid, False)
+				logger.info("Last ID updated:" + lastid)
 			
 			# skip the first time
 			if first > 0:
@@ -80,16 +81,16 @@ class RetweetBot(object):
 				try:
 					# let's retweet
 					if native_retweet:
-						logger.info("Retweeting: " + status.user.screen_name + " " + status.text, True)
+						logger.info("Retweeting: " + status.user.screen_name + " " + status.text)
 						api.PostRetweet (status.id)
 					else:
 						retweet = 'RT @' + status.user.screen_name + ": " + status.text
 						if len (retweet) > 140:
 							retweet = retweet [:137] + "..."
-						logger.info("Tweeting: " + retweet, True)
+						logger.info("Tweeting: " + retweet)
 						api.PostUpdate (retweet)
 				except _twitter.TwitterError:
-					logger.error("Could not retweet!", True)
+					logger.error("Could not retweet!")
 
 			# zZzZzZ
 			time.sleep(sleep)
