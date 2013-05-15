@@ -28,12 +28,6 @@ class RetweetBot(object):
 		logger.info("----------------------------------")
 		logger.info("")
 		
-		print "----------------------------------"
-		print "     Flying Sheep Retweet Bot"
-		print "         Bot is starting!"
-		print "----------------------------------"
-		print ""
-			
 		api = _twitter.Api (
 			consumer_key = con_key,
 			consumer_secret = con_sec,
@@ -41,7 +35,7 @@ class RetweetBot(object):
 			access_token_secret = tok_sec
 		)
 		
-		logger.info("Bot started!")
+		logger.important("Bot started!")
 		logger.info("Searching tweets containing '" + hashtag + "'.")
 		
 		print "Bot started!"
@@ -90,13 +84,13 @@ class RetweetBot(object):
 				try:
 					# let's retweet
 					if native_retweet:
-						logger.info("Retweeting: " + status.user.screen_name + " " + status.text)
+						logger.important("Retweeting: " + status.user.screen_name + " " + status.text)
 						api.PostRetweet (status.id)
 					else:
 						retweet = 'RT @' + status.user.screen_name + ": " + status.text
 						if len (retweet) > 140:
 							retweet = retweet [:137] + "..."
-						logger.info("Tweeting: " + retweet)
+						logger.important("Tweeting: " + retweet)
 						api.PostUpdate (retweet)
 				except _twitter.TwitterError:
 					logger.error("Could not retweet!")

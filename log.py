@@ -9,13 +9,14 @@ from datetime import datetime
 import os
 
 INFO=0
+IMPORTANT=36
 ERROR=42
 QUIET=666
 
 class Log(object):
 	
 	loglevel_file = INFO
-	loglevel_console = ERROR
+	loglevel_console = IMPORTANT
 	
 	def __init__(self, filename):
 		self.logfile = open(filename, "a+")
@@ -35,6 +36,14 @@ class Log(object):
 		if self.loglevel_file <= INFO:
 			self.logfile.write(msg+"\n")
 		if self.loglevel_console <= INFO:
+			print msg
+		
+	def important(self, text):
+		now = datetime.now()
+		msg = "[" + str(now.month) + "/" + str(now.day) + "/" + str(now.year) + " " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second) + "] [ERROR] " + text
+		if self.loglevel_file <= IMPORTANT:
+			self.logfile.write(msg +"\n")
+		if self.loglevel_console <= IMPORTANT:
 			print msg
 		
 	def error(self, text):
