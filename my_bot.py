@@ -3,54 +3,48 @@
 # 
 # Copyright (c) 2013 Malte Bublitz, https://malte-bublitz.de
 # Copyright (c) 2013 Benjamin Leuckefeld, http://atroxlp.de
-# Copyright (c) 2012 Juan C. Olivares <juancri@juancri.com>
-# based on original code by Christian Palomares <palomares.c@gmail.com>
-# 
-# Distributed under the MIT/X11 license. Check LICENSE for details.
-# 
+#
 
-import time
-import _twitter
 import bot
 
-class MyBot(bot.RetweetBot):
-	# config
-	config = {
-			"me": "myownscreenname", # Your own screen name
-			"hashtag": '#myhashtag1', # Any hashtag or magic word that triggers the retweet
-			"additionalHashtags": ["tag1", "#tag2"], # At least one of the most be contained in the tweet. write "[]" for no additionalHashtags
-			"sleep": 5, # Time betweet queries to Twitter
-			"count": 100, # Amount of tweets per request (max 100)
-			"nativeRetweet": True, # If true, retweets natively. If false, retweets using "RT @user:" 
-			
-			# Twitter API Config
-			"Consumer_Key": "",
-			"Consumer_Secret": "",
-			"Acces_Token_Key": "",
-			"Acces_Token_Secret": ""
-		}
+config = {
+		"me": "myownscreenname", # Your own screen name
+		"hashtag": '#myhashtag1', # Any hashtag or magic word that triggers the retweet
+		"additionalHashtags": ["tag1", "#tag2"], # At least one of the most be contained in the tweet. write "[]" for no additionalHashtags
+		"sleep": 5, # Time betweet queries to Twitter
+		"count": 100, # Amount of tweets per request (max 100)
+		"nativeRetweet": True, # If true, retweets natively. If false, retweets using "RT @user:" 
 		
-	def additional_conditions(self, status):
+		# Twitter API Config
+		"Consumer_Key": "",
+		"Consumer_Secret": "",
+		"Acces_Token_Key": "",
+		"Acces_Token_Secret": ""
+	}
+	
+def get_conditions():
+	def check_conditions(tweet):
 		# is it a mention?
-		if status.text.lower().startswith("@"):
+		if tweet.text.lower().startswith("@"):
 			return False
 			
 		# is it a RT?
-		if status.text.lower().startswith("rt"):
+		if tweet.text.lower().startswith("rt"):
 			return False
 
 		# does not contain "nsfw"
-		if status.text.lower().find("nsfw") > 0:
+		if tweet.text.lower().find("nsfw") > 0:
 			return False
 
 		# at least 3 words
-		if len(status.text.split(" ")) < 3:
-			return False
+		if len(tweet.text.split(" ")) < 3:
+			return False			
 		return True
+	return check_conditions	
 
 def main():
-	bot = MyBot()
-	bot.run()
+	rtbot = bot.RetweetBot()
+	rtbot.run(config["me"], config["hashtag"], config["additionalHashtags"], config["sleep"], config["count"], config["nativeRetweet"], config["Consumer_Key"], config["Consumer_Secret"], config["Acces_Token_Key"], config["Acces_Token_Secret"], get_conditions())
 
 if __name__=="__main__":
 	try:

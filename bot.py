@@ -54,18 +54,38 @@ class RetweetBot(object):
 		# at least 3 words
 		if len(status.text.split(" ")) < 3:
 			return False
+			
 		return True
 
 	def run(self):
-		print "Bot started! Getting tweets..."
+		print "----------------------------------"
+		print "     Flying Sheep Retweet Bot"
+		print "         Bot is starting!"
+		print "----------------------------------"
+		
+		import os
+		log = os.path.join(os.path.dirname(__file__), ".".join(os.path.basename(__file__).split(".")[:-1])+".log")
+		
+		if not os.access(os.path.join(os.path.dirname(__self__), log), W_OK):
+			print "Log file does not exists. Creating one for you."
+			f = file(log, 'w')
+			f.close()
+			print "Logfile saved!"
+			
+		print "Bot started!"
 		print "Searching tweets containing '" + self.config["hashtag"] + "'."
+		
 		# loop
 		lastid = None
 		first = 1
 		while 1:
 			# get last tweets
 			# print "Getting tweets..."
-			timeline = self.api.GetSearch(self.config["hashtag"], since_id = lastid, per_page = self.config["count"])
+			try:
+				timeline = self.api.GetSearch(self.config["hashtag"], since_id = lastid, per_page = self.config["count"])
+			except _twitter.TwitterError:
+				print "Could not get tweets!"
+				continue
 			
 			# update last ID
 			if len (timeline) > 0:
@@ -112,11 +132,10 @@ class RetweetBot(object):
 						self.api.PostUpdate (retweet)
 				except _twitter.TwitterError:
 					print "Could not retweet!"
-					pass
 
 			# zZzZzZ
 			time.sleep(self.config["sleep"])
-
+			
 def main():
 	bot = RetweetBot()
 	bot.run()
