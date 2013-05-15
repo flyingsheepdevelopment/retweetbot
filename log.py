@@ -7,6 +7,7 @@
 
 from datetime import datetime
 import os
+import codecs
 
 INFO=0
 IMPORTANT=36
@@ -19,7 +20,7 @@ class Log(object):
 	loglevel_console = IMPORTANT
 	
 	def __init__(self, filename):
-		self.logfile = open(filename, "a+")
+		self.logfile = codecs.open(filename, "a+", "utf-8")
 		
 	def __del__(self):
 		self.logfile.close()
