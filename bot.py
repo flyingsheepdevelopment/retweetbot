@@ -27,6 +27,12 @@ class RetweetBot(object):
 		logger.info("         Bot is starting!")
 		logger.info("----------------------------------")
 		logger.info("")
+		
+		print "----------------------------------"
+		print "     Flying Sheep Retweet Bot"
+		print "         Bot is starting!"
+		print "----------------------------------"
+		print ""
 			
 		api = _twitter.Api (
 			consumer_key = con_key,
@@ -37,6 +43,9 @@ class RetweetBot(object):
 		
 		logger.info("Bot started!")
 		logger.info("Searching tweets containing '" + hashtag + "'.")
+		
+		print "Bot started!"
+		print "Searching tweets containing '" + hashtag + "'."
 		
 		# loop
 		lastid = None
