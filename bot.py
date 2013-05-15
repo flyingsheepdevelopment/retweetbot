@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+﻿#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # 
 # Copyright (c) 2013 Malte Bublitz, https://malte-bublitz.de
@@ -69,7 +69,7 @@ class RetweetBot(object):
 				# does not contain word from blacklist
 				if len(blacklist) > 0:
 					for bl in blacklist:
-						if status.text.lower().find(bl) >= 0
+						if status.text.lower().find(bl) >= 0:
 							continue
 				
 				# has additional hashtag
