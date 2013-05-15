@@ -11,7 +11,7 @@ config = {
 		"me": "myownscreenname", # Your own screen name
 		"hashtag": '#myhashtag1', # Any hashtag or magic word that triggers the retweet
 		"additionalHashtags": ["tag1", "#tag2"], # At least one of the most be contained in the tweet. write "[]" for no additionalHashtags
-		"backlist": ["nsfw", "#porn"]
+		"backlist": ["nsfw", "#porn"],
 		"sleep": 5, # Time betweet queries to Twitter
 		"count": 100, # Amount of tweets per request (max 100)
 		"nativeRetweet": True, # If true, retweets natively. If false, retweets using "RT @user:" 
