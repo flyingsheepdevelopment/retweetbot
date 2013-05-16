@@ -5,7 +5,7 @@ Main program (bot.py)
 ---------------------
 
 Copyright (c) 2013 Malte Bublitz, https://malte-bublitz.de
-Copyright (c) 2013 Benjamin Leuckefeld, http://atroxlp.de
+Copyright (c) 2013 Benjamin Leuckefeld, https://atroxlp.de
 Copyright (c) 2012 Juan C. Olivares <juancri@juancri.com>
 based on original code by Christian Palomares <palomares.c@gmail.com>
  
