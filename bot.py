@@ -15,7 +15,7 @@ import _twitter
 import sys
 
 class RetweetBot(object):
-	def run(self, me, hashtag, add_hashtags, blacklist, sleep, count, native_retweet, con_key, con_sec, tok_key, tok_sec, check_conds, logfilename):
+	def run(self, me, hashtag, add_hashtags, blacklist, blacklistuser, sleep, count, native_retweet, con_key, con_sec, tok_key, tok_sec, check_conds, logfilename):
 		import log
 		logger = log.Log(logfilename)
 		if len(sys.argv)>1:
@@ -62,44 +62,56 @@ class RetweetBot(object):
 			# check tweets
 			for status in timeline:
 
-				# do not rt own tweets
-				if status.user.screen_name.lower() == me:
+				# check if tweet contains hashtag
+				if status.text.lower().find(hashtag.lower()) < 0:
 					continue
-				
-				# does not contain word from blacklist
-				if len(blacklist) > 0:
+			
+				# check if tweet send by you
+				if status.user.screen_name.lower() == me.lower():
+					continue
+					
+				# check if tweet send by blacklistuser
+				if len(blacklistuser) > 0:
 					send = True
-					for bl in blacklist:
-						if status.text.lower().find(bl) >= 0:
+					for u in blacklistuser:
+						if status.user.screen_name.lower() == u.lower():
 							send = False
-						if not send:
-							continue
-				
-				# has additional hashtag
-				if len(add_hashtags) > 0:
-					send = False
-					for ht in add_hashtags:
-						if status.text.lower().find(ht) >= 0:
-							send = True
-
 					if not send:
 						continue
 				
-				# checks additional conditions
+				# check if tweet contains blacklisted word
+				if len(blacklist) > 0:
+					send = True
+					for bl in blacklist:
+						if status.text.lower().find(bl.lower()) >= 0:
+							send = False
+					if not send:
+						continue
+				
+				# check if tweet contains one additional hashtag
+				if len(add_hashtags) > 0:
+					send = False
+					for ht in add_hashtags:
+						if status.text.lower().find(ht.lower()) >= 0:
+							send = True
+					if not send:
+						continue
+						
+				# check additional conditions
 				if not check_conds(status):
 					continue
 				
 				try:
 					# let's retweet
 					if native_retweet:
-						logger.important("Retweeting: " + status.user.screen_name + " " + status.text)
 						api.PostRetweet (status.id)
+						logger.important("Retweeting: " + status.user.screen_name + " " + status.text)
 					else:
 						retweet = 'RT @' + status.user.screen_name + ": " + status.text
 						if len (retweet) > 140:
 							retweet = retweet [:137] + "..."
-						logger.important("Tweeting: " + retweet)
 						api.PostUpdate (retweet)
+						logger.important("Tweeting: " + retweet)
 				except _twitter.TwitterError:
 					logger.error("Could not retweet!")
 

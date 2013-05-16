@@ -12,7 +12,8 @@ config = {
 		"me": "myownscreenname", # Your own screen name
 		"hashtag": '#myhashtag1', # Any hashtag or magic word that triggers the retweet
 		"additionalHashtags": ["tag1", "#tag2"], # At least one of the most be contained in the tweet. write "[]" for no additionalHashtags
-		"backlist": ["nsfw", "#porn"],
+		"blacklist": ["nsfw", "#porn"], # If one the these words is contained in the tweet, it won't retweet. write "[]" for no blacklist
+		"blacklistusers": ["example"], # The bot ignores tweets by these users. USERNAMES WITHOUT @! write "[]" for no blacklistuser
 		"sleep": 5, # Time betweet queries to Twitter
 		"count": 100, # Amount of tweets per request (max 100)
 		"nativeRetweet": True, # If true, retweets natively. If false, retweets using "RT @user:" 
@@ -47,6 +48,7 @@ def main():
 			config["hashtag"],
 			config["additionalHashtags"],
 			config["blacklist"],
+			config["blacklistusers"],
 			config["sleep"],
 			config["count"],
 			config["nativeRetweet"],
