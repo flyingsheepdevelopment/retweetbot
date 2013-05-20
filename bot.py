@@ -45,7 +45,7 @@ class RetweetBot(object):
 			# get last tweets
 			try:
 				timeline = api.GetSearch(hashtag, since_id = lastid, per_page = count)
-			except _twitter.TwitterError:
+			except:
 				logger.error("Could not get tweets!")
 				continue
 			
@@ -112,7 +112,7 @@ class RetweetBot(object):
 							retweet = retweet [:137] + "..."
 						api.PostUpdate (retweet)
 						logger.important("Tweeting: " + retweet)
-				except _twitter.TwitterError:
+				except:
 					logger.error("Could not retweet!")
 
 			# zZzZzZ
