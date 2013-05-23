@@ -103,8 +103,8 @@ class RetweetBot(object):
 						send = True
 						file = codecs.open("config/blacklist.bc", "a+", "utf-8")
 						for line in file: 
-							if not line == "" 
-								if not line == " "
+							if not line == "":
+								if not line == " ":
 									if status.text.lower().find(line.lower()) >= 0:
 										send = False
 									
@@ -116,8 +116,8 @@ class RetweetBot(object):
 						send = True
 						file = codecs.open("config/blacklistusers.bc", "a+", "utf-8")
 						for line in file: 
-							if not line == "" 
-								if not line == " "
+							if not line == "":
+								if not line == " ":
 									if status.user.screen_name.lower() == line.lower():
 										send = False
 									
@@ -129,8 +129,8 @@ class RetweetBot(object):
 						send = False
 						file = codecs.open("config/additionalHashtags.bc", "a+", "utf-8")
 						for line in file: 
-							if not line == "" 
-								if not line == " "
+							if not line == "":
+								if not line == " ":
 									if status.text.lower().find(line.lower()) >= 0:
 										send = True
 									
