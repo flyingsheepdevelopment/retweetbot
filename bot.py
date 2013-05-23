@@ -13,9 +13,10 @@ import time
 import os
 import _twitter
 import sys
+import codecs
 
 class RetweetBot(object):
-	def run(self, me, hashtag, add_hashtags, blacklist, blacklistuser, sleep, count, native_retweet, con_key, con_sec, tok_key, tok_sec, check_conds, logfilename):
+	def run(self, me, hashtag, add_hashtags, blacklist, blacklistuser, sleep, count, native_retweet, con_key, con_sec, tok_key, tok_sec, gconfig, check_conds, logfilename):
 		import log
 		logger = log.Log(logfilename)
 		if len(sys.argv)>1:
@@ -60,8 +61,7 @@ class RetweetBot(object):
 				continue
 			
 			# check tweets
-			for status in timeline:
-
+			for status in timeline:	
 				# check if tweet contains hashtag
 				if status.text.lower().find(hashtag.lower()) < 0:
 					continue
@@ -97,6 +97,47 @@ class RetweetBot(object):
 					if not send:
 						continue
 						
+				# check general configs
+				for gc in gconfig:
+					if gc.lower() == "blacklist":
+						send = True
+						file = codecs.open("config/blacklist.bc", "a+", "utf-8")
+						for line in file: 
+							if not line == "" 
+								if not line == " "
+									if status.text.lower().find(line.lower()) >= 0:
+										send = False
+									
+						file.close()
+						if not send:
+							continue
+							
+					if gc.lower() == "blacklistusers":
+						send = True
+						file = codecs.open("config/blacklistusers.bc", "a+", "utf-8")
+						for line in file: 
+							if not line == "" 
+								if not line == " "
+									if status.user.screen_name.lower() == line.lower():
+										send = False
+									
+						file.close()
+						if not send:
+							continue
+						
+					if gc.lower() == "additionalHashtags":
+						send = False
+						file = codecs.open("config/additionalHashtags.bc", "a+", "utf-8")
+						for line in file: 
+							if not line == "" 
+								if not line == " "
+									if status.text.lower().find(line.lower()) >= 0:
+										send = True
+									
+						file.close()
+						if not send:
+							continue
+				
 				# check additional conditions
 				if not check_conds(status):
 					continue
