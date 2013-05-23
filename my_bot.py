@@ -18,7 +18,7 @@ config = {
 		"count": 100, # Amount of tweets per request (max 100)
 		"nativeRetweet": True, # If true, retweets natively. If false, retweets using "RT @user:" 
 		
-		"General_Configs": ["blacklist", "blacklistusers", "additionalHashtags"] # Valid options: "blacklist", "blacklistusers", "additionalHashtags". write "[]" for no generalconfigs.
+		"General_Configs": ["blacklist", "blacklistusers", "additionalHashtags"], # Valid options: "blacklist", "blacklistusers", "additionalHashtags". write "[]" for no generalconfigs.
 		# Example: If General_Configs contains "blacklist" your bot will check the blacklist file (config/blacklist.bc).
 		# 		   If a tweet contains one word of the blacklist file, it won't retweet.
 		
@@ -60,7 +60,7 @@ def main():
 			config["Consumer_Secret"],
 			config["Acces_Token_Key"],
 			config["Acces_Token_Secret"],
-			cofing["General_Configs"],
+			config["General_Configs"],
 			get_conditions(),
 			os.path.join(os.path.dirname(__file__), ".".join(os.path.basename(__file__).split(".")[:-1])+".log")
 			)

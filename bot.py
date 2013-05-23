@@ -101,7 +101,7 @@ class RetweetBot(object):
 				for gc in gconfig:
 					if gc.lower() == "blacklist":
 						send = True
-						file = codecs.open("config/blacklist.bc", "a+", "utf-8")
+						file = codecs.open("blacklist.bc", "a+", "utf-8")
 						for line in file: 
 							if not line == "":
 								if not line == " ":
@@ -114,7 +114,7 @@ class RetweetBot(object):
 							
 					if gc.lower() == "blacklistusers":
 						send = True
-						file = codecs.open("config/blacklistusers.bc", "a+", "utf-8")
+						file = codecs.open("blacklistusers.bc", "a+", "utf-8")
 						for line in file: 
 							if not line == "":
 								if not line == " ":
@@ -125,9 +125,9 @@ class RetweetBot(object):
 						if not send:
 							continue
 						
-					if gc.lower() == "additionalHashtags":
+					if gc.lower() == "additionalhashtags":
 						send = False
-						file = codecs.open("config/additionalHashtags.bc", "a+", "utf-8")
+						file = codecs.open("additionalHashtags.bc", "a+", "utf-8")
 						for line in file: 
 							if not line == "":
 								if not line == " ":
